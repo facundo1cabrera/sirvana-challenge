@@ -13,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         const tagsOutput = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: `Based on the following content, return a set of tags of max 5 tags separated with a coma. Content: 
+            messages: [{ role: "user", content: `Based on the following content, return a set of tags of max 5 tags separated with a coma. The tags should be in lowercase and in english. Content: 
             ${content}` }]
         });
 
