@@ -14,32 +14,41 @@ export default function Home() {
     if (e.key !== 'Enter') return;
     setValue("");
     setError("");
-    setPrompt("");
-    setLoading(true);
     if (prompt.length < 4) {
       setError("The prompt length must be at least 4 chracters long");
       return;
     }
 
-    const res = await fetch("/api/search", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt: prompt })
-    });
+    setPrompt("");
+    setLoading(true);
 
-    const reader = res.body?.pipeThrough(new TextDecoderStream()).getReader();
-    setLoading(false);
-    while (true) {
-      if (!reader) {
-        throw Error("fac")
+    try {
+      const res = await fetch("/api/search", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: prompt })
+      });
+
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Error consuming search endpoint");
       }
-      const { value, done } = await reader.read();
-      if (done) break;
-      setValue((prev) => prev + value)
-    }
 
+      const reader = res.body?.pipeThrough(new TextDecoderStream()).getReader();
+      setLoading(false);
+      while (true) {
+        if (!reader) {
+          throw Error("fac")
+        }
+        const { value, done } = await reader.read();
+        if (done) break;
+        setValue((prev) => prev + value)
+      }
+    } catch (e) {
+      setError("An unexpected error occurred, please try again.");
+      setLoading(false);
+    }
   }
 
   return (
