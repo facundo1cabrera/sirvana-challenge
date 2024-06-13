@@ -1,6 +1,6 @@
 ## Getting Started
 
-This is a simplified clone of Perplexity. You can visit a live demo at ###url demo###.
+This is a simplified clone of Perplexity. You can visit a live demo [here](https://sirvana-challenge.vercel.app/).
 
 The challenges of this project were:
 1) Streaming the response of the OpenAPI call to the frontend.
