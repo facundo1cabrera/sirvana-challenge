@@ -3,8 +3,6 @@ import Product from "@/models/Product";
 import { NextApiRequest, NextApiResponse } from "next";
 import OpenAI from "openai";
 
-export const runtime = 'edge';
-
 const openai = new OpenAI();
 
 export default async function handler(
@@ -17,6 +15,7 @@ export default async function handler(
 
     try {
         await connectToDatabase();
+
         const { prompt } = req.body
 
         const tagsFromPrompt = await openai.chat.completions.create({
